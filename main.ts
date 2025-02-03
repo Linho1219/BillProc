@@ -1,4 +1,5 @@
 // JSON.stringify([...$0.rows].map(row=>[...row.cells].map(cell=>cell.innerText)))
+
 import fs from "fs";
 import iconv from "iconv-lite";
 import { INCOME, EXPENSE, tableHeader } from "./types.ts";

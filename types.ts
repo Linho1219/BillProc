@@ -105,7 +105,7 @@ interface ProcessMethodBase {
 }
 
 interface ProcessMethodNormal extends ProcessMethodBase {
-  squeeze: false;
+  squeeze?: false;
   process: (rec: RawRec) => Rec;
 }
 
@@ -116,8 +116,6 @@ interface ProcessMethodSqueeze extends ProcessMethodBase {
 }
 
 export type ProcessMethod = ProcessMethodNormal | ProcessMethodSqueeze;
-
-
 
 export enum Currency {
   CNY = "人民币",

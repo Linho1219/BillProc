@@ -11,7 +11,6 @@ const account = "同济校园卡";
 
 const processors: ProcessMethod[] = [
   {
-    squeeze: false,
     match: ({ amount }) => amount > 0 && amount % 10000 === 0,
     process: (rec) => ({
       type: TRANSFER,
@@ -23,7 +22,6 @@ const processors: ProcessMethod[] = [
     }),
   },
   {
-    squeeze: false,
     match: ({ amount }) => amount > 0,
     process: (rec) => ({
       type: INCOME,
@@ -35,7 +33,6 @@ const processors: ProcessMethod[] = [
     }),
   },
   {
-    squeeze: false,
     match: ({ place }) => place === "四平路校区电控",
     process: (rec) => ({
       type: EXPENSE,
@@ -63,7 +60,6 @@ const processors: ProcessMethod[] = [
     },
   },
   {
-    squeeze: false,
     match: ({ place }) => place === "四平路校区第一超市",
     process: (rec) => ({
       type: EXPENSE,
@@ -76,7 +72,6 @@ const processors: ProcessMethod[] = [
     }),
   },
   {
-    squeeze: false,
     match: ({ place, amount }) =>
       place === "四平路校区西苑饮食广场西点4" && amount === -330,
     process: (rec) => ({
@@ -91,7 +86,6 @@ const processors: ProcessMethod[] = [
     }),
   },
   {
-    squeeze: false,
     match: ({ place }) =>
       place.includes("饮食广场") || place.includes("余庆堂"),
     process: (rec) => {
