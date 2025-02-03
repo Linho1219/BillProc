@@ -12,7 +12,7 @@ const account = "同济校园卡";
 const processors: ProcessMethod[] = [
   {
     squeeze: false,
-    match: ({ amount }) => amount > 0,
+    match: ({ amount }) => amount > 0 && amount % 10000 === 0,
     process: (rec) => ({
       type: TRANSFER,
       time: rec.time,
@@ -23,11 +23,35 @@ const processors: ProcessMethod[] = [
     }),
   },
   {
+    squeeze: false,
+    match: ({ amount }) => amount > 0,
+    process: (rec) => ({
+      type: INCOME,
+      time: rec.time,
+      amount: rec.amount,
+      account,
+      subcategory: "福利补贴",
+      remark: "补助",
+    }),
+  },
+  {
+    squeeze: false,
+    match: ({ place }) => place === "四平路校区电控",
+    process: (rec) => ({
+      type: EXPENSE,
+      time: rec.time,
+      amount: -rec.amount,
+      account,
+      category: "生活",
+      subcategory: "水电费",
+    }),
+  },
+  {
     squeeze: true,
     match: ({ place }) => place.includes("浴室"),
     maxTimeDiff: 1000 * 60 * 60,
     process: (recs) => {
-      const amount = recs.reduce((acc, rec) => acc - rec.amount, 0);
+      const amount = -recs.reduce((acc, rec) => acc + rec.amount, 0);
       return {
         type: EXPENSE,
         time: recs.at(-1)!.time,
@@ -37,6 +61,19 @@ const processors: ProcessMethod[] = [
         subcategory: "水电费",
       };
     },
+  },
+  {
+    squeeze: false,
+    match: ({ place }) => place === "四平路校区第一超市",
+    process: (rec) => ({
+      type: EXPENSE,
+      time: rec.time,
+      amount: -rec.amount,
+      account,
+      category: "零嘴",
+      subcategory: "零食",
+      shop: "教育超市",
+    }),
   },
   {
     squeeze: false,
@@ -83,6 +120,5 @@ const processors: ProcessMethod[] = [
     },
   },
 ];
-
 
 export default processors;
