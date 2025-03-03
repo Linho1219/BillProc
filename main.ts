@@ -13,9 +13,9 @@ const data: RawRec[] = (<string[][]>JSON.parse(rawData)).map(
     time: new Date(time),
     place,
     pos: Number(pos),
-    amount: Number(amount) * 100,
+    amount: Math.round(Number(amount) * 100),
     type,
-    balance: Number(balance) * 100,
+    balance: Math.round(Number(balance) * 100),
   })
 );
 
@@ -46,6 +46,12 @@ for (const [index, rec] of data.entries()) {
     jumpto = i;
   }
 }
+
+const total = result.reduce((acc, r) => {
+  if (r.type === INCOME) return acc + r.amount;
+  if (r.type === EXPENSE) return acc - r.amount;
+  return acc;
+}, 0);
 
 const resultStr =
   tableHeader +
@@ -89,3 +95,9 @@ const resultStr =
     .join("\n");
 
 fs.writeFileSync("result.csv", iconv.encode(resultStr, "gbk"));
+
+const fmtNum = (n: number) => (n > 0 ? `+ ${n / 100}` : `- ${-n / 100}`);
+
+console.log(`From:  ${fmtNum(data.at(-1)!.balance - data.at(-1)!.amount)}`);
+console.log(`To:    ${fmtNum(data[0].balance)}`);
+console.log(`Total: ${fmtNum(total)}`);

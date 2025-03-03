@@ -72,12 +72,11 @@ const processors: ProcessMethod[] = [
     }),
   },
   {
-    match: ({ place, amount }) =>
-      place === "四平路校区西苑饮食广场西点4" && amount === -330,
+    match: ({ place, amount }) => place.includes("西点") && amount >= -380,
     process: (rec) => ({
       type: EXPENSE,
       time: rec.time,
-      amount: 330,
+      amount: -rec.amount,
       account,
       category: "零嘴",
       subcategory: "饮品",
@@ -87,7 +86,9 @@ const processors: ProcessMethod[] = [
   },
   {
     match: ({ place }) =>
-      place.includes("饮食广场") || place.includes("余庆堂"),
+      place.includes("饮食广场") ||
+      place.includes("余庆堂") ||
+      place.includes("西点"),
     process: (rec) => {
       const subcategory = ((hr) => {
         if (hr < 10) return "早餐";
