@@ -11,6 +11,7 @@ const account = "同济校园卡";
 
 const processors: ProcessMethod[] = [
   {
+    // 充值
     match: ({ amount }) => amount > 0 && amount % 10000 === 0,
     process: (rec) => ({
       type: TRANSFER,
@@ -22,6 +23,7 @@ const processors: ProcessMethod[] = [
     }),
   },
   {
+    // 学校补助
     match: ({ amount }) => amount > 0,
     process: (rec) => ({
       type: INCOME,
@@ -33,6 +35,7 @@ const processors: ProcessMethod[] = [
     }),
   },
   {
+    // 宿舍电费
     match: ({ place }) => place === "四平路校区电控",
     process: (rec) => ({
       type: EXPENSE,
@@ -44,6 +47,20 @@ const processors: ProcessMethod[] = [
     }),
   },
   {
+    // 嘉定班车
+    match: ({ place }) => place.includes("班车"),
+    process: (rec) => ({
+      type: EXPENSE,
+      time: rec.time,
+      amount: -rec.amount,
+      account,
+      category: "交通",
+      subcategory: "公共交通",
+      shop: "班车",
+    }),
+  },
+  {
+    // 澡堂
     squeeze: true,
     match: ({ place }) => place.includes("浴室"),
     maxTimeDiff: 1000 * 60 * 60,
@@ -56,10 +73,13 @@ const processors: ProcessMethod[] = [
         account,
         category: "生活",
         subcategory: "水电费",
+        shop: "西南八浴室",
       };
     },
   },
   {
+    // 教育超市买零食
+    // 全部判定为零食，因为生活用品都是上网买的
     match: ({ place }) => place === "四平路校区第一超市",
     process: (rec) => ({
       type: EXPENSE,
@@ -72,6 +92,7 @@ const processors: ProcessMethod[] = [
     }),
   },
   {
+    // 面包房买饮料
     match: ({ place, amount }) => place.includes("西点") && amount >= -380,
     process: (rec) => ({
       type: EXPENSE,
@@ -85,8 +106,49 @@ const processors: ProcessMethod[] = [
     }),
   },
   {
+    // 西苑食堂特判
+    // 因为不仅有正餐，还有奶茶，水果捞和烧烤
+    match: ({ place, pos }) => place === "四平路校区西苑广场小炒部",
+    process: (rec) => {
+      let remark: string | undefined;
+      const categories = ((pos, hr) => {
+        if (pos === 44)
+          return {
+            category: "零嘴",
+            subcategory: "饮品",
+          };
+        if (pos === 40)
+          return {
+            category: "正餐",
+            subcategory: "水果",
+          };
+        if (pos === 54) {
+          remark = "烧烤";
+          return {
+            category: "正餐",
+            subcategory: "夜宵",
+          };
+        }
+        return {
+          category: "正餐",
+          subcategory: hr < 10 ? "早餐" : hr < 16 ? "午餐" : "晚餐",
+        };
+      })(rec.pos, rec.time.getHours());
+      return {
+        type: EXPENSE,
+        time: rec.time,
+        amount: -rec.amount,
+        account,
+        ...categories,
+        shop: "西苑食堂",
+        remark,
+      };
+    },
+  },
+
+  {
     match: ({ place }) =>
-      place.includes("饮食广场") ||
+      place.includes("广场") ||
       place.includes("余庆堂") ||
       place.includes("西点"),
     process: (rec) => {
