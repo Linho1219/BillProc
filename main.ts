@@ -2,6 +2,7 @@
 
 import fs from "fs";
 import iconv from "iconv-lite";
+import { DateTime } from "luxon";
 import { INCOME, EXPENSE, tableHeader } from "./types.ts";
 import { RawRec, Rec } from "./types.ts";
 import config from "./config.ts";
@@ -94,10 +95,13 @@ const resultStr =
     .map((r) => r.join(","))
     .join("\n");
 
-fs.writeFileSync("result.csv", iconv.encode(resultStr, "gbk"));
+const fileName = "result-" + DateTime.now().toFormat("MMdd-HHmmss") + ".csv";
+
+fs.writeFileSync(fileName, iconv.encode(resultStr, "gbk"));
 
 const fmtNum = (n: number) => (n > 0 ? `+ ${n / 100}` : `- ${-n / 100}`);
 
 console.log(`From:  ${fmtNum(data.at(-1)!.balance - data.at(-1)!.amount)}`);
 console.log(`To:    ${fmtNum(data[0].balance)}`);
 console.log(`Total: ${fmtNum(total)}`);
+console.log(`Result: ./${fileName}`);
