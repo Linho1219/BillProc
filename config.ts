@@ -1,4 +1,4 @@
-import { INCOME, EXPENSE, TRANSFER, LOAN } from "./types.ts";
+import { INCOME, EXPENSE, TRANSFER, LOAN, RawRec } from "./types.ts";
 import {
   TransferSubcategory,
   LoanSubcategory,
@@ -8,6 +8,37 @@ import {
 import { ProcessMethod } from "./types.ts";
 
 const account = "同济校园卡";
+
+function expense(rec: RawRec) {
+  return {
+    type: EXPENSE as typeof EXPENSE,
+    time: rec.time,
+    amount: -rec.amount,
+    account,
+  };
+}
+
+function meal(rec: RawRec) {
+  const hr = rec.time.getHours();
+  return {
+    category: "正餐",
+    subcategory: hr < 10 ? "早餐" : hr < 16 ? "午餐" : "晚餐",
+  };
+}
+
+function drink() {
+  return {
+    category: "零嘴",
+    subcategory: "饮品",
+  };
+}
+
+function snack() {
+  return {
+    category: "零嘴",
+    subcategory: "零食",
+  };
+}
 
 const processors: ProcessMethod[] = [
   {
@@ -38,10 +69,7 @@ const processors: ProcessMethod[] = [
     // 宿舍电费
     match: ({ place }) => place === "四平路校区电控",
     process: (rec) => ({
-      type: EXPENSE,
-      time: rec.time,
-      amount: -rec.amount,
-      account,
+      ...expense(rec),
       category: "生活",
       subcategory: "水电费",
     }),
@@ -50,10 +78,7 @@ const processors: ProcessMethod[] = [
     // 嘉定班车
     match: ({ place }) => place.includes("班车"),
     process: (rec) => ({
-      type: EXPENSE,
-      time: rec.time,
-      amount: -rec.amount,
-      account,
+      ...expense(rec),
       category: "交通",
       subcategory: "公共交通",
       shop: "班车",
@@ -82,12 +107,8 @@ const processors: ProcessMethod[] = [
     // 全部判定为零食，因为生活用品都是上网买的
     match: ({ place }) => place === "四平路校区第一超市",
     process: (rec) => ({
-      type: EXPENSE,
-      time: rec.time,
-      amount: -rec.amount,
-      account,
-      category: "零嘴",
-      subcategory: "零食",
+      ...expense(rec),
+      ...snack(),
       shop: "教育超市",
     }),
   },
@@ -95,14 +116,19 @@ const processors: ProcessMethod[] = [
     // 面包房买饮料
     match: ({ place, amount }) => place.includes("西点") && amount >= -380,
     process: (rec) => ({
-      type: EXPENSE,
-      time: rec.time,
-      amount: -rec.amount,
-      account,
-      category: "零嘴",
-      subcategory: "饮品",
+      ...expense(rec),
+      ...drink(),
       shop: "面包房",
       remark: "雪碧",
+    }),
+  },
+  {
+    // 肯德基
+    match: ({ place }) => place.includes("肯德基"),
+    process: (rec) => ({
+      ...expense(rec),
+      ...(-rec.amount <= 1200 ? snack() : meal(rec)),
+      shop: "肯德基",
     }),
   },
   {
@@ -111,12 +137,8 @@ const processors: ProcessMethod[] = [
     match: ({ place, pos }) => place === "四平路校区西苑广场小炒部",
     process: (rec) => {
       let remark: string | undefined;
-      const categories = ((pos, hr) => {
-        if (pos === 44)
-          return {
-            category: "零嘴",
-            subcategory: "饮品",
-          };
+      const categories = ((pos) => {
+        if (pos === 44) return drink();
         if (pos === 40)
           return {
             category: "正餐",
@@ -125,38 +147,26 @@ const processors: ProcessMethod[] = [
         if (pos === 54) {
           remark = "烧烤";
           return {
-            category: "正餐",
+            category: "零嘴",
             subcategory: "夜宵",
           };
         }
-        return {
-          category: "正餐",
-          subcategory: hr < 10 ? "早餐" : hr < 16 ? "午餐" : "晚餐",
-        };
-      })(rec.pos, rec.time.getHours());
+        return meal(rec);
+      })(rec.pos);
       return {
-        type: EXPENSE,
-        time: rec.time,
-        amount: -rec.amount,
-        account,
+        ...expense(rec),
         ...categories,
         shop: "西苑食堂",
         remark,
       };
     },
   },
-
   {
     match: ({ place }) =>
       place.includes("广场") ||
       place.includes("余庆堂") ||
       place.includes("西点"),
     process: (rec) => {
-      const subcategory = ((hr) => {
-        if (hr < 10) return "早餐";
-        if (hr < 16) return "午餐";
-        return "晚餐";
-      })(rec.time.getHours());
       const shop = ((place) => {
         if (place.includes("西点4")) return "面包房";
         if (place.includes("西苑")) return "西苑食堂";
@@ -166,12 +176,8 @@ const processors: ProcessMethod[] = [
         if (place.includes("余庆堂")) return "余香食集";
       })(rec.place);
       return {
-        type: EXPENSE,
-        time: rec.time,
-        amount: Math.abs(rec.amount),
-        account,
-        category: "正餐",
-        subcategory,
+        ...expense(rec),
+        ...meal(rec),
         shop,
       };
     },
