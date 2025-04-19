@@ -40,7 +40,8 @@ for (const [index, rec] of data.entries()) {
     while (
       i < data.length &&
       processor.match(data[i]) &&
-      data[i].time.getTime() - rec.time.getTime() < processor.maxTimeDiff
+      Math.abs(data[i].time.getTime() - rec.time.getTime()) <
+        processor.maxTimeDiff
     )
       i++;
     result.push(processor.process(data.slice(index, i)));
