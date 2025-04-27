@@ -1,11 +1,11 @@
-import { INCOME, EXPENSE, TRANSFER, LOAN, RawRec } from "./types.ts";
+import { INCOME, EXPENSE, TRANSFER, LOAN, RawRec } from "@/types.ts";
 import {
   TransferSubcategory,
   LoanSubcategory,
   ReimbursementState,
   Currency,
-} from "./types.ts";
-import { ProcessMethod } from "./types.ts";
+} from "@/types.ts";
+import { ProcessMethod } from "@/types.ts";
 
 const account = "同济校园卡";
 

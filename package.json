@@ -1,14 +1,27 @@
 {
   "name": "billprocess",
-  "devDependencies": {
-    "@types/luxon": "^3.6.2",
-    "@types/node": "^22.13.0"
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "iconv-lite": "^0.6.3",
-    "luxon": "^3.6.1"
+    "luxon": "^3.6.1",
+    "sober": "^1.1.0",
+    "vite-plugin-node-polyfills": "^0.23.0",
+    "vue": "^3.5.13"
   },
-  "scripts": {
-    "start": "tsx main.ts"
+  "devDependencies": {
+    "@types/luxon": "^3.6.2",
+    "@types/node": "^22.14.1",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "dotenv": "^16.5.0",
+    "patch-package": "^8.0.0",
+    "typescript": "~5.6.2",
+    "vite": "^6.1.0",
+    "vue-tsc": "^2.1.10"
   }
 }

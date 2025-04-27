@@ -100,6 +100,8 @@ interface RecLoan extends RecBase {
 
 export type Rec = RecIncome | RecExpense | RecTransfer | RecLoan;
 
+export type RecWithSelect = Rec & { selected: boolean };
+
 interface ProcessMethodBase {
   match: (rec: RawRec) => boolean;
 }

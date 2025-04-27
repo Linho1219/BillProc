@@ -3,9 +3,9 @@
 import fs from "fs";
 import iconv from "iconv-lite";
 import { DateTime } from "luxon";
-import { INCOME, EXPENSE, tableHeader } from "./types.ts";
-import { RawRec, Rec } from "./types.ts";
-import config from "./config.ts";
+import { INCOME, EXPENSE, tableHeader } from "./src/types.ts";
+import { RawRec, Rec } from "./src/types.ts";
+import config from "./src/config.ts";
 
 const rawData = fs.readFileSync("data.json", "utf-8");
 
