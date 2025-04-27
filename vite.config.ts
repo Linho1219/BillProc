@@ -17,7 +17,16 @@ export default defineConfig({
     }),
     nodePolyfills(),
   ],
-  build: { chunkSizeWarningLimit: 1024 },
+  build: {
+    chunkSizeWarningLimit: 1024,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          iconv: ["iconv-lite", "safer-buffer"],
+        },
+      },
+    },
+  },
   resolve: {
     alias: [
       {
