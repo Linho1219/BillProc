@@ -1,9 +1,6 @@
 <template>
   <s-page theme="auto">
     <main>
-      <h1>同济校卡账单导入</h1>
-      <s-divider></s-divider>
-      <h2>获取数据</h2>
       <CopyCode />
       <s-text-field
         v-model.lazy="rawJSON"
@@ -11,7 +8,6 @@
         class="monospace-field"
       ></s-text-field>
       <s-divider></s-divider>
-      <h2>预览数据</h2>
       <div class="filter">
         <s-icon name="menu">
           <svg viewBox="0 -960 960 960">
@@ -25,12 +21,13 @@
           v-model.lazy="startDate"
         ></s-date-picker>
         <s-date-picker label="终止日期" v-model.lazy="endDate"></s-date-picker>
-        <s-button type="elevated" @click="updateSelect"> 应用 </s-button>
-        <s-icon-button @click="startDate = endDate = ''">
-          <s-icon name="close"></s-icon>
-        </s-icon-button>
+        <s-button type="elevated" @click="updateSelect">应用筛选</s-button>
+        <s-button type="text" @click="startDate = endDate = ''" slot="trigger"
+          >清除日期</s-button
+        >
       </div>
       <DisplayData v-model="processedObjWithSelect" />
+      <DownloadBtn :data="processedObjWithSelect" />
     </main>
   </s-page>
 </template>
@@ -39,6 +36,7 @@
 import { computed, ref } from "vue";
 import DisplayData from "@/components/display.vue";
 import CopyCode from "@/components/copycode.vue";
+import DownloadBtn from "./components/downloadbtn.vue";
 
 const rawJSON = ref("");
 import { RawRec, Rec, RecWithSelect } from "@/types.ts";
@@ -116,7 +114,11 @@ const updateSelect = () =>
 
 <style>
 s-page {
-  height: 100vh;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   padding: 0 1rem;
   display: flex;
   flex-direction: column;
@@ -126,20 +128,15 @@ s-page {
 main {
   width: 100%;
   max-width: 800px;
-  margin: 3rem 0;
+  margin: 1.5rem 0;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   flex-grow: 1;
 }
 
-h1,
-h2 {
-  margin: 0;
-}
-
 s-divider {
-  margin: 1rem 0 0;
+  margin: 0.5rem 0;
 }
 
 .monospace-field {
@@ -154,7 +151,16 @@ s-divider {
 
 .filter {
   display: flex;
-  gap: 1rem;
+  gap: 0.8rem;
   align-items: center;
+  flex-wrap: wrap;
+  padding-left: 40px;
+  position: relative;
+}
+.filter > s-icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
 }
 </style>

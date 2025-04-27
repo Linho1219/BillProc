@@ -28,7 +28,7 @@
           DateTime.fromJSDate(item.time).toFormat("yyyy-MM-dd HH:mm:ss")
         }}</s-td>
         <s-td center>{{ item.type }}</s-td>
-        <s-td center>{{ item.subcategory ?? "" }}</s-td>
+        <s-td center>{{ item.subcategory }}</s-td>
         <s-td
           right
           :class="{
@@ -48,7 +48,7 @@
 import { Rec, RecWithSelect } from "@/types.ts";
 import { INCOME, EXPENSE } from "@/types.ts";
 import { DateTime } from "luxon";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 const recs = defineModel<RecWithSelect[]>();
 function toDisplayAmount({ amount }: Rec): string {
   return (amount / 100).toFixed(2);
@@ -108,5 +108,12 @@ s-td.income {
 }
 s-td.expense {
   color: var(--s-color-error);
+}
+
+s-tr {
+  transition: background-color 0.1s;
+}
+s-tbody s-tr:hover {
+  background-color: var(--s-color-surface-container-low);
 }
 </style>
