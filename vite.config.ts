@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { resolve } from "node:path";
+import { visualizer } from "rollup-plugin-visualizer";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 import "dotenv/config";
@@ -16,6 +17,12 @@ export default defineConfig({
       },
     }),
     nodePolyfills(),
+    visualizer({
+      gzipSize: true,
+      brotliSize: true,
+      emitFile: false,
+      filename: "chunk-analysis.html",
+    }),
   ],
   build: {
     chunkSizeWarningLimit: 1024,
