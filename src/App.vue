@@ -54,7 +54,7 @@ const processedObj = computed(() => {
     }
   })();
   const data: RawRec[] = parsedJSON.map(
-    ([time, place, pos, amount, type, balance]) => ({
+    ([_, time, place, pos, amount, type, balance]) => ({
       time: new Date(time),
       place,
       pos: Number(pos),
