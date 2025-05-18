@@ -10,6 +10,7 @@
   "dependencies": {
     "iconv-lite": "^0.6.3",
     "luxon": "^3.6.1",
+    "safer-buffer": "^2.1.2",
     "sober": "^1.1.0",
     "vite-plugin-node-polyfills": "^0.23.0",
     "vue": "^3.5.13"
