@@ -104,16 +104,21 @@ export type RecWithSelect = Rec & { selected: boolean };
 
 interface ProcessMethodBase {
   match: (rec: RawRec) => boolean;
+  /** 是否压缩多条明细 */
+  sqeueeze?: boolean;
 }
 
 interface ProcessMethodNormal extends ProcessMethodBase {
   squeeze?: false;
+  /** 处理规则 */
   process: (rec: RawRec) => Rec;
 }
 
 interface ProcessMethodSqueeze extends ProcessMethodBase {
   squeeze: true;
+  /** 压缩明细的最大时间跨度 */
   maxTimeDiff: number;
+  /** 处理规则 */
   process: (recs: RawRec[]) => Rec;
 }
 
