@@ -5,6 +5,7 @@
 // @description  try to take over the world!
 // @author       Linho
 // @match        https://yikatong.tongji.edu.cn/user/*
+// @match        https://yikatong.tongji.edu.cn/User/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=tongji.edu.cn
 // @require      https://cdn.jsdelivr.net/npm/js-base64@3.7.7/base64.min.js
 // @grant        none
