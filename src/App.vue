@@ -113,7 +113,10 @@ const updateSelect = () =>
 
 onMounted(() => {
   const urlHash = decodeURIComponent(window.location.hash.slice(1));
-  if (urlHash) rawJSON.value = urlHash;
+  if (urlHash) {
+    rawJSON.value = urlHash;
+    location.hash = "";
+  }
 });
 </script>
 
