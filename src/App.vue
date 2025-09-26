@@ -113,9 +113,9 @@ const updateSelect = () =>
 
 import { decode } from "js-base64";
 onMounted(() => {
-  const urlHash = decode(window.location.hash.slice(1));
+  const urlHash = window.location.hash.slice(1);
   if (urlHash) {
-    rawJSON.value = urlHash;
+    rawJSON.value = decode(decodeURIComponent(urlHash));
     location.hash = "";
   }
 });
