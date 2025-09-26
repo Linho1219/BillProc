@@ -112,9 +112,8 @@ const updateSelect = () =>
   (processedObjWithSelect.value = addSelect(processedObj.value));
 
 onMounted(() => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const jsonParam = urlParams.get("json");
-  if (jsonParam) rawJSON.value = decodeURIComponent(jsonParam);
+  const urlHash = decodeURIComponent(window.location.hash.slice(1));
+  if (urlHash) rawJSON.value = urlHash;
 });
 </script>
 
