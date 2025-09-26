@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import DisplayData from "@/components/display.vue";
 import CopyCode from "@/components/copycode.vue";
 import DownloadBtn from "./components/downloadbtn.vue";
@@ -110,6 +110,12 @@ watch(processedObj, () => updateSelect());
 
 const updateSelect = () =>
   (processedObjWithSelect.value = addSelect(processedObj.value));
+
+onMounted(() => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const jsonParam = urlParams.get("json");
+  if (jsonParam) rawJSON.value = decodeURIComponent(jsonParam);
+});
 </script>
 
 <style>
