@@ -111,8 +111,9 @@ watch(processedObj, () => updateSelect());
 const updateSelect = () =>
   (processedObjWithSelect.value = addSelect(processedObj.value));
 
+import { decode } from "js-base64";
 onMounted(() => {
-  const urlHash = decodeURIComponent(window.location.hash.slice(1));
+  const urlHash = decode(window.location.hash.slice(1));
   if (urlHash) {
     rawJSON.value = urlHash;
     location.hash = "";
