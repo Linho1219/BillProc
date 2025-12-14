@@ -21,6 +21,7 @@
     gotoBillBtn.href = "javascript:void(0);";
     gotoBillBtn.textContent = "打开账单";
     gotoBillBtn.classList.add("indexlogin");
+    gotoBillBtn.style.marginRight = "5px";
     gotoBillBtn.onclick = () =>
       goPage(
         15,
