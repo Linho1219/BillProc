@@ -165,6 +165,7 @@ const processors: ProcessMethod[] = [
     match: ({ place }) =>
       place.includes("广场") ||
       place.includes("余庆堂") ||
+      place.includes("余香食集") ||
       place.includes("西点"),
     process: (rec) => {
       const shop = ((place) => {
@@ -173,7 +174,8 @@ const processors: ProcessMethod[] = [
         if (place.includes("南苑")) return "南苑食堂";
         if (place.includes("北苑")) return "北苑食堂";
         if (place.includes("学苑")) return "学苑食堂";
-        if (place.includes("余庆堂")) return "余香食集";
+        if (place.includes("余庆堂") || place.includes("余香食集"))
+          return "余香食集";
       })(rec.place);
       return {
         ...expense(rec),
