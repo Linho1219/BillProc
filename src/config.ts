@@ -117,9 +117,8 @@ const processors: ProcessMethod[] = [
     match: ({ place, amount }) => place.includes("西点") && amount >= -380,
     process: (rec) => ({
       ...expense(rec),
-      ...drink(),
+      ...snack(),
       shop: "面包房",
-      remark: "雪碧",
     }),
   },
   {
