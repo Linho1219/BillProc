@@ -165,12 +165,14 @@ const processors: ProcessMethod[] = [
       place.includes("广场") ||
       place.includes("余庆堂") ||
       place.includes("余香食集") ||
+      place.includes("食堂") ||
       place.includes("西点"),
     process: (rec) => {
       const shop = ((place) => {
         if (place.includes("西点4")) return "面包房";
         if (place.includes("西苑")) return "西苑食堂";
         if (place.includes("南苑")) return "南苑食堂";
+        if (place.includes("小北苑")) return "小北苑食堂";
         if (place.includes("北苑")) return "北苑食堂";
         if (place.includes("学苑")) return "学苑食堂";
         if (place.includes("余庆堂") || place.includes("余香食集"))
