@@ -4,27 +4,24 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview",
-    "postinstall": "patch-package"
+    "preview": "vite preview"
   },
   "dependencies": {
     "iconv-lite": "^0.6.3",
     "js-base64": "^3.7.8",
-    "luxon": "^3.6.1",
+    "luxon": "^3.7.2",
     "safer-buffer": "^2.1.2",
-    "sober": "^1.1.0",
-    "vite-plugin-node-polyfills": "^0.23.0",
-    "vue": "^3.5.13"
+    "sober": "^1.1.10",
+    "vue": "^3.5.31"
   },
   "devDependencies": {
-    "@types/luxon": "^3.6.2",
-    "@types/node": "^22.14.1",
-    "@vitejs/plugin-vue": "^5.2.1",
-    "dotenv": "^16.5.0",
-    "patch-package": "^8.0.0",
+    "@types/luxon": "^3.7.1",
+    "@types/node": "^22.19.15",
+    "@vitejs/plugin-vue": "^6.0.5",
+    "dotenv": "^17.3.1",
     "rollup-plugin-visualizer": "^5.14.0",
-    "typescript": "~5.6.2",
-    "vite": "^6.1.0",
-    "vue-tsc": "^2.1.10"
+    "typescript": "~5.6.3",
+    "vite": "^8.0.3",
+    "vue-tsc": "^3.2.6"
   }
 }
