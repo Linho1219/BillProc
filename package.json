@@ -7,7 +7,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "iconv-lite": "^0.6.3",
+    "gbk.js": "^0.3.0",
     "js-base64": "^3.7.8",
     "luxon": "^3.7.2",
     "safer-buffer": "^2.1.2",
@@ -15,6 +15,7 @@
     "vue": "^3.5.31"
   },
   "devDependencies": {
+    "@types/gbk.js": "^0.3.2",
     "@types/luxon": "^3.7.1",
     "@types/node": "^22.19.15",
     "@vitejs/plugin-vue": "^6.0.5",

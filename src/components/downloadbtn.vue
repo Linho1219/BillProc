@@ -8,8 +8,8 @@
 <script setup lang="ts">
 import { RecWithSelect } from "@/types";
 import { tableHeader, INCOME, EXPENSE } from "@/types";
-import iconv from "iconv-lite";
 import { DateTime } from "luxon";
+import gbk from "gbk.js";
 
 const props = defineProps<{
   data: RecWithSelect[];
@@ -57,7 +57,8 @@ function downloadFile() {
       })
       .map((r) => r.join(","))
       .join("\n");
-  const blob = new Blob([iconv.encode(resultStr, "gbk")], {
+  const uint8Array = new Uint8Array(gbk.encode(resultStr));
+  const blob = new Blob([uint8Array], {
     type: "text/csv;charset=gbk",
   });
   const url = URL.createObjectURL(blob);
