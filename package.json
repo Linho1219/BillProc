@@ -12,17 +12,17 @@
     "luxon": "^3.7.2",
     "safer-buffer": "^2.1.2",
     "sober": "^1.1.10",
-    "vue": "^3.5.31"
+    "vue": "^3.5.32"
   },
   "devDependencies": {
     "@types/gbk.js": "^0.3.2",
     "@types/luxon": "^3.7.1",
-    "@types/node": "^22.19.15",
+    "@types/node": "^22.19.17",
     "@vitejs/plugin-vue": "^6.0.5",
-    "dotenv": "^17.3.1",
+    "dotenv": "^17.4.2",
     "rollup-plugin-visualizer": "^5.14.0",
     "typescript": "~5.6.3",
-    "vite": "^8.0.3",
+    "vite": "^8.0.8",
     "vue-tsc": "^3.2.6"
   }
 }
